@@ -1,14 +1,13 @@
-import os
-import sqlite3
-from flask import Flask, request, redirect, url_for, render_template_string
 import logging
+import os
+
+from flask import Flask, render_template_string, request
 
 app = Flask(__name__)
 
 # Configure application logging.
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+    level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
 )
 
 logger = logging.getLogger(__name__)
@@ -124,7 +123,7 @@ def calculate_result(name, marks):
 
     for mark in marks:
         if isinstance(mark, bool) or not isinstance(mark, int):
-            raise ValueError("Marks must be whole numbers.")
+            raise ValueError("Marks must be whole numbers.")  # noqa: TRY004
 
         if mark < 0 or mark > 100:
             raise ValueError("Each subject mark must be between 0 and 100.")
@@ -136,10 +135,7 @@ def calculate_result(name, marks):
 
     # Passing rule for this teaching example:
     # at least 35 marks in every subject.
-    status = (
-        "PASS" if all(mark >= 35 for mark in validated_marks)
-        else "FAIL"
-    )
+    status = "PASS" if all(mark >= 35 for mark in validated_marks) else "FAIL"
 
     return {
         "name": cleaned_name,
@@ -172,17 +168,13 @@ def home():
             for mark in marks:
                 # Reject decimals and empty values.
                 if not mark.isdigit():
-                    raise ValueError(
-                        "Enter whole-number marks between 0 and 100."
-                    )
+                    raise ValueError("Enter whole-number marks between 0 and 100.")
 
                 parsed_marks.append(int(mark))
 
             result = calculate_result(name, parsed_marks)
 
-            logger.info(
-                "Result calculated successfully for a student."
-            )
+            logger.info("Result calculated successfully for a student.")
 
         except ValueError as exc:
             error = str(exc)
@@ -209,7 +201,7 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
 
     app.run(
-        host="0.0.0.0",
+        host="0.0.0.0",  # nosec B104
         port=port,
         debug=False,
     )

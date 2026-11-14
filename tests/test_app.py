@@ -8,7 +8,7 @@ import pytest
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
-from app import app, calculate_result  # noqa: E402
+from app import app, calculate_result
 
 
 def test_calculate_pass_result():

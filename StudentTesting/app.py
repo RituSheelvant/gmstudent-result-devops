@@ -1,4 +1,4 @@
-﻿def calculate_total(marks):
+def calculate_total(marks):
     return sum(marks)
 
 
